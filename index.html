@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Simple website for SMA Practical 8 demonstrating Google Analytics (GA4) event tracking, hosted on GitHub Pages." />
+  <title>SMA Practical 8 - Google Analytics Demo</title>
+
+  <!-- ========================================================
+       GOOGLE ANALYTICS 4 (GA4) TAG
+       Replace 'G-XXXXXXXXXX' below with your actual Measurement ID
+       ======================================================== -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){ dataLayer.push(arguments); }
+    gtag('js', new Date());
+
+    // Replace G-XXXXXXXXXX with your GA4 Measurement ID
+    const GA_MEASUREMENT_ID = 'G-XXXXXXXXXX';
+    gtag('config', GA_MEASUREMENT_ID, {
+      debug_mode: true // Enables real-time visibility in GA4 DebugView
+    });
+  </script>
+  <!-- ======================================================== -->
+
+  <!-- Google Fonts: Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- Top Announcement / Tag Status Banner -->
+  <header class="top-banner" id="tag-banner">
+    <div class="banner-content">
+      <span class="status-indicator" id="status-indicator"></span>
+      <span id="status-text">Checking Google Tag configuration...</span>
+    </div>
+  </header>
+
+  <div class="container">
+    <!-- Hero Section -->
+    <header class="hero">
+      <div class="badge">SMA Practical 8 • Web Telemetry</div>
+      <h1>Google Analytics Tracking Demo</h1>
+      <p class="subtitle">
+        A lightweight, interactive site hosted on GitHub Pages designed to demonstrate real-time user telemetry, custom event dispatching, and conversions in Google Analytics 4.
+      </p>
+
+      <div class="hero-actions">
+        <button id="cta-primary-btn" class="btn btn-primary" onclick="trackCtaClick('Primary Hero CTA', 'Get Started')">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+          Trigger "Explore Features" Event
+        </button>
+        <button id="cta-download-btn" class="btn btn-secondary" onclick="trackFileDownload('SMA_Pract8_Report.pdf')">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+          Trigger "Download Sample" Event
+        </button>
+      </div>
+    </header>
+
+    <!-- Interactive Analytics Triggers Grid -->
+    <main class="grid-section">
+      <h2 class="section-title">Interactive Telemetry Triggers</h2>
+      <p class="section-desc">Click, submit, or navigate below to fire custom events directly to Google Analytics and view them in the live inspector.</p>
+
+      <div class="cards-grid">
+        <!-- Card 1: Tab / Content Navigation -->
+        <article class="card">
+          <div class="card-header">
+            <div class="card-icon">📂</div>
+            <h3>1. Content Category Switcher</h3>
+          </div>
+          <p class="card-text">Dispatches a <code>select_content</code> event with category & tab details.</p>
+          <div class="tab-buttons">
+            <button class="tab-btn active" data-tab="overview" onclick="trackTabChange('Overview')">Overview</button>
+            <button class="tab-btn" data-tab="metrics" onclick="trackTabChange('Metrics')">Metrics</button>
+            <button class="tab-btn" data-tab="schema" onclick="trackTabChange('Event Schema')">Schema</button>
+          </div>
+          <div class="tab-display" id="tab-content">
+            <strong>Overview:</strong> Demonstrating page view & content interaction flows.
+          </div>
+        </article>
+
+        <!-- Card 2: Feedback & Lead Generation Form -->
+        <article class="card">
+          <div class="card-header">
+            <div class="card-icon">✉️</div>
+            <h3>2. Lead Generation / Feedback</h3>
+          </div>
+          <p class="card-text">Dispatches a <code>generate_lead</code> / <code>form_submit</code> event upon submission.</p>
+          <form id="analytics-form" onsubmit="trackFormSubmit(event)">
+            <div class="form-group">
+              <input type="text" id="user-name" placeholder="Enter your name" required />
+            </div>
+            <div class="form-group">
+              <select id="user-interest" required>
+                <option value="" disabled selected>Select topic of interest</option>
+                <option value="Realtime Analytics">Realtime Analytics</option>
+                <option value="Event Funnels">Event Funnels</option>
+                <option value="User Acquisition">User Acquisition</option>
+              </select>
+            </div>
+            <button type="submit" class="btn btn-outline">Submit Form & Fire Event</button>
+          </form>
+        </article>
+
+        <!-- Card 3: User Engagement & Rating -->
+        <article class="card">
+          <div class="card-header">
+            <div class="card-icon">⭐</div>
+            <h3>3. User Rating Interaction</h3>
+          </div>
+          <p class="card-text">Dispatches a <code>rate_item</code> event with numerical satisfaction value.</p>
+          <div class="star-rating" id="rating-stars">
+            <button type="button" class="star" onclick="trackRating(1)" title="1 Star">★</button>
+            <button type="button" class="star" onclick="trackRating(2)" title="2 Stars">★</button>
+            <button type="button" class="star" onclick="trackRating(3)" title="3 Stars">★</button>
+            <button type="button" class="star" onclick="trackRating(4)" title="4 Stars">★</button>
+            <button type="button" class="star" onclick="trackRating(5)" title="5 Stars">★</button>
+          </div>
+          <p class="rating-feedback" id="rating-status">Click a star to record a rating event.</p>
+        </article>
+
+        <!-- Card 4: External Link Tracking -->
+        <article class="card">
+          <div class="card-header">
+            <div class="card-icon">🔗</div>
+            <h3>4. Outbound Link Tracking</h3>
+          </div>
+          <p class="card-text">Dispatches a custom <code>outbound_click</code> event before opening an external resource.</p>
+          <div class="link-actions">
+            <a href="https://analytics.google.com" target="_blank" rel="noopener noreferrer" class="link-card" onclick="trackOutbound('Google Analytics Console', 'https://analytics.google.com')">
+              <span>Google Analytics Console ↗</span>
+            </a>
+            <a href="https://github.com/Karm-Dave/smapract8" target="_blank" rel="noopener noreferrer" class="link-card" onclick="trackOutbound('GitHub Repository', 'https://github.com/Karm-Dave/smapract8')">
+              <span>GitHub Repo: smapract8 ↗</span>
+            </a>
+          </div>
+        </article>
+      </div>
+    </main>
+
+    <!-- Realtime Event Logger / Telemetry HUD -->
+    <section class="telemetry-section">
+      <div class="telemetry-header">
+        <div class="telemetry-title">
+          <div class="live-dot"></div>
+          <h3>Local Event Inspector (Console HUD)</h3>
+        </div>
+        <button class="clear-btn" onclick="clearEventLogs()">Clear Log</button>
+      </div>
+      <p class="telemetry-subtitle">
+        Every event passed to <code>gtag('event', ...)</code> is captured below in real time so you can inspect its payload before verifying it in Google Analytics.
+      </p>
+      <div class="log-terminal" id="event-terminal">
+        <div class="log-entry log-system">
+          <span class="log-time">[System]</span>
+          <span class="log-message">Page initialized. Google Tag listeners active.</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Guide & Steps Quick Card -->
+    <section class="guide-section">
+      <h3>🚀 Quick Verification Checklist</h3>
+      <ol class="steps-list">
+        <li><strong>Add your Tag ID:</strong> In <code>index.html</code>, replace <code>G-XXXXXXXXXX</code> with your GA4 Measurement ID.</li>
+        <li><strong>Open Google Analytics:</strong> Navigate to <strong>Reports &gt; Realtime</strong> in your Google Analytics dashboard.</li>
+        <li><strong>Trigger actions:</strong> Click any of the buttons or submit the form on this page.</li>
+        <li><strong>Watch the numbers rise:</strong> You will immediately see the user count and events like <code>cta_click</code>, <code>generate_lead</code>, and <code>select_content</code> appear in your GA4 Realtime dashboard!</li>
+      </ol>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <p>SMA Practical 8 • Built for GitHub Pages & Google Analytics 4 integration.</p>
+    </footer>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
